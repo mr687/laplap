@@ -45,6 +45,15 @@ final class UnlockCounter {
         return count >= requiredPresses
     }
 
+    /// The current in-window press count, expiry-aware: reading it runs
+    /// window expiry with the injected clock, so the value is always current
+    /// even when no press just arrived. Lets the UI show live "n/6" progress
+    /// and reset to 0 when the rolling window closes.
+    var liveCount: Int {
+        expireStale(now: clock())
+        return count
+    }
+
     /// Drops entries older than the window. The oldest live entry sits just
     /// before the next insertion slot.
     private func expireStale(now: Double) {

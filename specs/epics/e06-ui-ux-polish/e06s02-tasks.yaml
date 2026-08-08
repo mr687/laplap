@@ -1,13 +1,13 @@
 story_id: e06s02
 title: "Visual polish: fades and typography"
-status: failing
+status: passing
 bcps: 3
 tasks:
   - id: 1
     description: "Fade-in on arm and fade-out before close (NSAnimationContext, 0.15s) for badge and every overlay window"
     verify: "swift test && swift build"
     risk: P2
-    status: failing
+    status: passing
     allure:
       severity: normal
       categories: ["ui", "overlay"]
@@ -15,7 +15,7 @@ tasks:
     description: "Overlay typography hierarchy: bold title 'CLEANING MODE' + subtitle 'Press ⌘ 6 times to exit' + progress line; badge uses ⌘ glyph"
     verify: "swift test && swift build"
     risk: P2
-    status: failing
+    status: passing
     allure:
       severity: normal
       categories: ["ui", "overlay"]
@@ -23,7 +23,7 @@ tasks:
     description: "Manual visual smoke steps documented (verify-script)"
     verify: "swift build"
     risk: P3
-    status: failing
+    status: passing
     allure:
       severity: minor
       categories: ["ui"]

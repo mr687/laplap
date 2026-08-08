@@ -1,13 +1,13 @@
 story_id: e06s01
 title: "Live unlock progress in badge and overlay"
-status: failing
+status: passing
 bcps: 5
 tasks:
   - id: 1
     description: "UnlockCounter.liveCount: expiry-aware computed count (calls window expiry on read); unit tests for count, reset, boundary"
     verify: "swift test"
     risk: P1
-    status: failing
+    status: passing
     allure:
       severity: high
       categories: ["unlock", "unit"]
@@ -15,7 +15,7 @@ tasks:
     description: "InputBlocker: onProgress(count, required) fired after every event; drives label updates before consumption"
     verify: "swift test"
     risk: P1
-    status: failing
+    status: passing
     allure:
       severity: high
       categories: ["input-lock", "unit"]
@@ -23,7 +23,7 @@ tasks:
     description: "Badge live label: baseline 'CAT MODE — ⌘ ×6 to exit' ↔ 'CAT MODE — ⌘ n/6' during gesture; reset when window expires"
     verify: "swift test && swift build"
     risk: P1
-    status: failing
+    status: passing
     allure:
       severity: high
       categories: ["ui", "overlay"]
@@ -31,7 +31,7 @@ tasks:
     description: "Clean overlay progress line: shows '⌘ n/6' during gesture, hidden at 0; updates via same onProgress path"
     verify: "swift test && swift build"
     risk: P2
-    status: failing
+    status: passing
     allure:
       severity: normal
       categories: ["ui", "overlay"]

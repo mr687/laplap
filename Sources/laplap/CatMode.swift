@@ -38,9 +38,19 @@ final class CatMode {
         self.promptFlow = promptFlow
         self.badgeFactory = badgeFactory
         // Wire callbacks after all stored properties are initialized (the
-        // closures capture self). Both run on the main run loop thread.
+        // closures capture self). All run on the main run loop thread.
         blocker.state.onUnlock = { [weak self] in self?.stop(0) }
         blocker.state.onTapDisabled = { [weak self] in self?.stop(0) }
+        // Live unlock progress: every tap event refreshes the badge label and
+        // resets it when the rolling window expires. The tap callback runs on
+        // the main run loop thread, so the main actor can be assumed; only the
+        // badge (main-actor Sendable) crosses into the isolated closure.
+        blocker.state.onProgress = { [weak self] count, required in
+            let badge = self?.badge
+            MainActor.assumeIsolated {
+                badge?.setProgress(count, of: required)
+            }
+        }
         if let tapCreator {
             blocker.setTapCreator(tapCreator)
         }
@@ -66,13 +76,15 @@ final class CatMode {
         // Badge appears only once cat mode is armed (tap installed).
         if let badge = (badgeFactory ?? { BadgeView() })() {
             badge.orderFrontRegardless()
+            badge.fadeIn()
             self.badge = badge
         }
         defer {
-            // Close and release on unlock/signal/exit so the process can
-            // terminate without a lingering window-server connection.
-            badge?.orderOut(nil)
-            badge?.close()
+            // Fade out (≤ 0.15s) then close and release on unlock/signal/exit
+            // so the process can terminate without a lingering window-server
+            // connection. The input tap is already stopped by then, so only
+            // the fade itself delays exit.
+            badge?.fadeOutAndClose()
             badge = nil
         }
         blocker.addRunLoopSource(to: CFRunLoopGetCurrent())

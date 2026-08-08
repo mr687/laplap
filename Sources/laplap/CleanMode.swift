@@ -38,9 +38,20 @@ final class CleanMode {
         self.permissionCheck = permissionCheck
         self.overlayFactory = overlayFactory
         // Wire callbacks after all stored properties are initialized (the
-        // closures capture self). Both run on the main run loop thread.
+        // closures capture self). All run on the main run loop thread.
         blocker.state.onUnlock = { [weak self] in self?.stop(0) }
         blocker.state.onTapDisabled = { [weak self] in self?.stop(0) }
+        // Live unlock progress: every tap event refreshes the overlay progress
+        // line and hides it when the rolling window expires. The tap callback
+        // runs on the main run loop thread, so the main actor can be assumed;
+        // only the controller (main-actor Sendable) crosses into the isolated
+        // closure.
+        blocker.state.onProgress = { [weak self] count, required in
+            let controller = self?.overlays
+            MainActor.assumeIsolated {
+                controller?.setProgress(count, of: required)
+            }
+        }
         if let tapCreator {
             blocker.setTapCreator(tapCreator)
         }

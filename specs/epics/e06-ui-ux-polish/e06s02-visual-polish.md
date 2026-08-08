@@ -16,15 +16,15 @@ below. The badge baseline label uses the ⌘ glyph. Animations are capped at
 
 ## Requirements
 
-- [ ] (ADDED) REQ-1 — Fades: on arm, after `orderFront`, window `alphaValue`
+- [x] (ADDED) REQ-1 — Fades: on arm, after `orderFront`, window `alphaValue`
   starts at 0 and animates to 1 via `NSAnimationContext` (0.15s); on teardown,
   animate to 0 then orderOut/close; total exit time ≤ 0.15s; applied to badge
   and every overlay window; duration constant exposed for tests. — P2
-- [ ] (ADDED) REQ-2 — Overlay typography: bold title "CLEANING MODE" (34pt
+- [x] (ADDED) REQ-2 — Overlay typography: bold title "CLEANING MODE" (34pt
   white), subtitle "Press ⌘ 6 times to exit" (18pt, white ~0.85 alpha),
   progress line from e06s01; centered and stays centered on screen resize;
   badge baseline uses the ⌘ glyph. — P2
-- [ ] (ADDED) REQ-3 — Manual visual smoke steps documented in the story's
+- [x] (ADDED) REQ-3 — Manual visual smoke steps documented in the story's
   Verification Script. — P3
 
 ## Steps

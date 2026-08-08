@@ -10,17 +10,22 @@ final class InputBlockerTests: XCTestCase {
     private var counter: UnlockCounter!
     private var unlocks = 0
     private var tapDisabledCalls = 0
+    private var progress: [(Int, Int)] = []
     private var blocker: InputBlocker!
 
     override func setUp() {
         counter = UnlockCounter()
         unlocks = 0
         tapDisabledCalls = 0
+        progress = []
         blocker = InputBlocker(
             counter: counter,
             onUnlock: { self.unlocks += 1 },
             onTapDisabled: { self.tapDisabledCalls += 1 }
         )
+        blocker.state.onProgress = { count, required in
+            self.progress.append((count, required))
+        }
     }
 
     private var stateRefcon: UnsafeMutableRawPointer {
@@ -146,6 +151,45 @@ final class InputBlockerTests: XCTestCase {
             let bit = (mask >> CGEventMask(type.rawValue)) & 1
             XCTAssertEqual(bit, 1, "mask must cover \(type)")
         }
+    }
+
+    // MARK: onProgress
+
+    func testOnProgressReportsCountsOneThroughSix() {
+        for i in 1...6 {
+            _ = invoke(.flagsChanged, commandKeyDown(54))
+            XCTAssertEqual(progress.last?.0, i, "each CMD down must report its live count")
+            XCTAssertEqual(progress.last?.1, 6, "required presses always reported")
+        }
+        XCTAssertEqual(progress.count, 6, "one progress report per CMD down")
+    }
+
+    func testOnProgressFiresForNonCommandEvents() {
+        _ = invoke(.flagsChanged, commandKeyDown(54))
+        _ = invoke(.flagsChanged, commandKeyDown(55))
+        _ = invoke(.keyDown, regularKeyDown())
+        XCTAssertEqual(progress.last?.0, 2, "any event must refresh with the current count")
+    }
+
+    func testOnProgressResetsAfterWindowExpiry() {
+        var now: Double = 0
+        let counter = UnlockCounter(clock: { now })
+        let blocker = InputBlocker(counter: counter, onUnlock: {}, onTapDisabled: {})
+        var recorded: [(Int, Int)] = []
+        blocker.state.onProgress = { recorded.append(($0, $1)) }
+        let refcon = Unmanaged.passUnretained(blocker.state).toOpaque()
+        let proxy = OpaquePointer(bitPattern: 1)!
+        for _ in 0..<5 {
+            _ = InputBlocker.callback(proxy, .flagsChanged, commandKeyDown(54), refcon)
+        }
+        now = 10.001
+        _ = InputBlocker.callback(proxy, .mouseMoved, mouseEvent(), refcon)
+        XCTAssertEqual(recorded.last?.0, 0, "window expiry must reset the reported count")
+    }
+
+    func testOnProgressNotFiredForNullEvents() {
+        _ = invoke(.null, regularKeyDown())
+        XCTAssertTrue(progress.isEmpty, "null padding events must not refresh progress")
     }
 
     // MARK: helpers

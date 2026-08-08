@@ -17,11 +17,21 @@ final class InputBlocker {
         /// Wired post-init by CatMode (closures may capture the owner).
         var onUnlock: () -> Void
         var onTapDisabled: () -> Void
+        /// Fired after every input event with (liveCount, requiredPresses) so
+        /// progress displays refresh on any event and reset on window expiry.
+        /// Default no-op; wired by CatMode/CleanMode.
+        var onProgress: (Int, Int) -> Void
 
-        init(counter: UnlockCounter, onUnlock: @escaping () -> Void, onTapDisabled: @escaping () -> Void) {
+        init(
+            counter: UnlockCounter,
+            onUnlock: @escaping () -> Void,
+            onTapDisabled: @escaping () -> Void,
+            onProgress: @escaping (Int, Int) -> Void = { _, _ in }
+        ) {
             self.counter = counter
             self.onUnlock = onUnlock
             self.onTapDisabled = onTapDisabled
+            self.onProgress = onProgress
         }
     }
 
@@ -110,6 +120,10 @@ final class InputBlocker {
                     state.onUnlock()
                 }
             }
+            // Every real input event refreshes the progress display; the
+            // expiry-aware read drops stale presses, so a quiet window resets
+            // the count on the next event.
+            state.onProgress(state.counter.liveCount, state.counter.requiredPresses)
         }
         return nil
     }
