@@ -6,7 +6,6 @@ Read CONVENTIONS.md before any GitHub or git operation.
 ## Project
 
 macOS utility that locks keyboard, trackpad, and mouse so a cat on the desk cannot type or click.
-Locks keyboard, trackpad, and external mouse so a cat walking on the desk cannot type or click.
 Two modes:
 - **cat** — screen stays visible, all input ignored. Exit: press CMD 6 times within 10 seconds.
 - **clean** — same input lock plus a fullscreen black overlay with centered exit instructions. Exit: press CMD 6 times within 10 seconds.
