@@ -7,7 +7,7 @@ tasks:
     description: "Scaffold SwiftPM package with executable target laplap (Package.swift, Sources/laplap/main.swift stub, Tests/laplapTests)"
     verify: "swift build"
     risk: P0
-    status: failing
+    status: passing
     allure:
       severity: critical
       categories: ["scaffold", "unit"]
@@ -15,7 +15,7 @@ tasks:
     description: "ArgParser: accepts cat, clean, --help; unknown mode prints usage to stderr and exits 2"
     verify: "swift test"
     risk: P1
-    status: failing
+    status: passing
     allure:
       severity: high
       categories: ["cli", "unit"]
@@ -23,7 +23,7 @@ tasks:
     description: "Permission gate: AXIsProcessTrusted() false -> print exact guidance message, exit code 3"
     verify: "swift test"
     risk: P0
-    status: failing
+    status: passing
     allure:
       severity: critical
       categories: ["permission", "unit"]
@@ -31,7 +31,7 @@ tasks:
     description: "UnlockCounter: counts Command key-down events (either side); 6 within rolling 10s window -> unlocked; stale presses expire; no overflow"
     verify: "swift test"
     risk: P0
-    status: failing
+    status: passing
     allure:
       severity: critical
       categories: ["unlock", "unit"]
@@ -39,7 +39,7 @@ tasks:
     description: "InputBlocker: CGEventTap at kCGHIDEventTap; callback consumes every event (returns nil); feeds UnlockCounter; tap failure or callback NULL -> run loop exits (fail-safe)"
     verify: "swift test && swift build"
     risk: P0
-    status: failing
+    status: passing
     allure:
       severity: critical
       categories: ["input-lock", "unit"]
@@ -47,7 +47,7 @@ tasks:
     description: "Wire cat mode end-to-end: main starts run loop, tap consumes input, unlock exits 0; SIGTERM/SIGINT exit cleanly"
     verify: "swift test && swift build"
     risk: P0
-    status: failing
+    status: passing
     allure:
       severity: critical
       categories: ["integration"]
