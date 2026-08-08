@@ -1,0 +1,20 @@
+id: e06
+slug: ui-ux-polish
+title: "UI/UX polish: unlock progress + visuals"
+summary: >
+  Live unlock progress feedback: the badge and the clean-mode overlay show
+  the current ⌘ n/6 count as the user presses Command, resetting when the
+  rolling 10-second window expires. Visual polish: fade-in on arm and
+  fade-out before close (0.15s) for the badge and every overlay window,
+  and a refined overlay typography hierarchy (bold title, subtitle,
+  progress line). Badge uses the ⌘ glyph in its baseline label.
+status: planned
+stories:
+  - id: e06s01
+    title: "Live unlock progress in badge and overlay"
+    bcps: 5
+    status: planned
+  - id: e06s02
+    title: "Visual polish: fades and typography"
+    bcps: 3
+    status: planned

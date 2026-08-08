@@ -35,3 +35,10 @@ epics:
     bcps: 2
     status: planned
     wsjf_order: 5
+  - id: e06
+    slug: ui-ux-polish
+    title: "UI/UX polish: unlock progress + visuals"
+    summary: "Live CMD progress in badge and overlay, fades, typography"
+    bcps: 8
+    status: planned
+    wsjf_order: 6
