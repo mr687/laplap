@@ -28,3 +28,10 @@ epics:
     bcps: 4
     status: planned
     wsjf_order: 4
+  - id: e05
+    slug: settings-command
+    title: "Settings command for permission grant"
+    summary: "laplap settings — open Accessibility pane + guidance"
+    bcps: 2
+    status: planned
+    wsjf_order: 5

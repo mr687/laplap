@@ -1,0 +1,13 @@
+id: e05
+slug: settings-command
+title: "Settings command for permission grant"
+summary: >
+  laplap settings — open System Settings -> Privacy & Security -> Accessibility
+  and print step-by-step guidance for granting the required Accessibility
+  permission, plus granted/not-granted status.
+status: planned
+stories:
+  - id: e05s01
+    title: "Settings command opens Accessibility pane"
+    bcps: 2
+    status: planned

@@ -14,6 +14,7 @@ in_scope:
   - e02: CLI laplap clean — same input lock plus fullscreen black overlay with centered exit text on every display, cursor hidden
   - e03: Accessibility permission flow — detect missing permission, print actionable message, offer to open System Settings; fail with clear error
   - e04: install.sh — release build + install to ~/.local/bin, idempotent
+  - e05: laplap settings — open System Settings Accessibility pane and print step-by-step guidance for granting permission
   - e01–e04: Tests embedded in each story — unlock-gesture counting, arg parsing, mode dispatch, event-consumption logic run headless (injected CGEvent, no accessibility grant needed)
 out_of_scope:
   - File deletion or disk cleanup — clean mode is visual-only by design; not valuable for the cat problem (deferred)
