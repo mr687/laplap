@@ -1,6 +1,6 @@
 # e01s02 — Status badge window in cat mode
 
-### Story [1.2]: Status badge window in cat mode — Implementation Steps
+### Story e01s02: Status badge window in cat mode — Implementation Steps
 
 **type:** feat
 **risk:** P2

@@ -1,6 +1,6 @@
 # e01s01 — Tracer bullet: laplap cat locks input, CMDx6 unlocks
 
-### Story [1.1]: Tracer bullet: laplap cat locks input, CMDx6 unlocks — Implementation Steps
+### Story e01s01: Tracer bullet: laplap cat locks input, CMDx6 unlocks — Implementation Steps
 
 **type:** feat
 **risk:** P0
