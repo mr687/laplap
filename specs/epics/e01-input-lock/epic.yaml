@@ -1,0 +1,19 @@
+id: e01
+slug: input-lock
+title: "CAT MODE: input lock core"
+summary: >
+  laplap cat consumes every keyboard, trackpad, and mouse event via a single
+  CGEventTap at kCGHIDEventTap. The unlock gesture (CMD pressed 6 times within
+  a rolling 10-second window) is detected inside the tap callback before events
+  are consumed. A small corner badge shows the lock is armed. Process death
+  restores input — no cleanup required.
+status: planned
+stories:
+  - id: e01s01
+    title: "Tracer bullet: laplap cat locks input, CMDx6 unlocks"
+    bcps: 5
+    status: planned
+  - id: e01s02
+    title: "Status badge window in cat mode"
+    bcps: 3
+    status: planned

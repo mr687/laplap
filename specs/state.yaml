@@ -1,0 +1,4 @@
+workflow_mode: solo-git
+handoff:
+  next_skill: plan-work
+project: laplap

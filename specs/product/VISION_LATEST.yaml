@@ -1,0 +1,14 @@
+north_star: >
+  A Mac owner can walk away from a cat on the desk and never worry about garbage
+  typed into documents, accidental clicks, or a cursor gone wild. One command arms
+  the lock, one gesture disarms it, and nothing can trap the user.
+statement: >
+  laplap is a native macOS CLI that ignores all input on command. Two modes:
+  CAT MODE (screen visible) and CLEANING MODE (black overlay with instructions).
+  Exit is always CMD pressed 6 times within 10 seconds. Zero dependencies, zero
+  persistence, zero data collected. If the process dies, the lock dies with it.
+non_goals:
+  - Cleaning actual files or disk space
+  - Custom gestures or hotkeys
+  - Background daemons or auto-start
+  - Cross-platform support

@@ -1,0 +1,21 @@
+story_id: e04s01
+title: "install.sh: idempotent release install"
+status: failing
+bcps: 2
+tasks:
+  - id: 1
+    description: "install.sh: swift build -c release, install binary to ~/.local/bin/laplap (fallback /usr/local/bin if writable), chmod +x, mkdir -p, set -euo pipefail"
+    verify: "bash -n install.sh"
+    risk: P2
+    status: failing
+    allure:
+      severity: normal
+      categories: ["install", "scripting"]
+  - id: 2
+    description: "Idempotent: re-run overwrites cleanly; prints post-install instructions (first-run permission note, CMDx6 gesture)"
+    verify: "bash -n install.sh"
+    risk: P2
+    status: failing
+    allure:
+      severity: normal
+      categories: ["install", "scripting"]

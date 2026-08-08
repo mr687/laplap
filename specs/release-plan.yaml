@@ -1,0 +1,30 @@
+release: 0.1.0
+epics:
+  - id: e01
+    slug: input-lock
+    title: "CAT MODE: input lock core"
+    summary: "laplap cat — consume all HID input, CMDx6 unlock, status badge"
+    bcps: 8
+    status: planned
+    wsjf_order: 1
+  - id: e02
+    slug: cleaning-mode
+    title: "CLEANING MODE: black overlay lock"
+    summary: "laplap clean — input lock plus fullscreen black overlay with exit instructions, cursor hidden"
+    bcps: 5
+    status: planned
+    wsjf_order: 2
+  - id: e03
+    slug: permission-flow
+    title: "Accessibility permission flow"
+    summary: "Prompt, System Settings handoff, clear error codes"
+    bcps: 3
+    status: planned
+    wsjf_order: 3
+  - id: e04
+    slug: install-polish
+    title: "install.sh + CLI polish"
+    summary: "Idempotent installer, --help, error codes"
+    bcps: 4
+    status: planned
+    wsjf_order: 4

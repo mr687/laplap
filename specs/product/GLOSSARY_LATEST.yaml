@@ -1,0 +1,13 @@
+terms:
+  - term: CAT MODE
+    definition: Lock mode where the screen stays fully visible; all HID input is consumed. A small status badge shows the lock is armed.
+  - term: CLEANING MODE
+    definition: Lock mode where every display is covered by a black fullscreen overlay with centered "press CMD 6 times to exit" text; cursor hidden.
+  - term: unlock gesture
+    definition: Pressing the Command key (either side) 6 times within a rolling 10-second window. Counts key-down transitions only. Detected inside the event tap before events are consumed.
+  - term: HID input
+    definition: Keyboard, built-in trackpad, and external mouse events at the hardware level (kCGHIDEventTap).
+  - term: event tap
+    definition: CGEventTap callback that observes input events before the system dispatches them; returning nil from the callback consumes the event.
+  - term: fail-safe
+    definition: The lock exists only in the running process. If the tap, the app, or the process dies, macOS restores normal input with no cleanup step.

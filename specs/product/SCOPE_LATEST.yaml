@@ -1,0 +1,46 @@
+core_value: One command makes a Mac cat-proof: all keyboard, trackpad, and mouse input ignored until the owner presses CMD 6 times.
+summary: >
+  laplap is a native macOS CLI (Swift, zero dependencies) that consumes all HID input
+  events so a cat walking across the desk cannot type, click, or move the cursor.
+  Two modes exist. CAT MODE keeps the screen visible and shows only a small status
+  badge; CLEANING MODE additionally covers every display with a black overlay and
+  centered exit instructions. Both modes exit via the same gesture: press the Command
+  key 6 times within a rolling 10-second window. The lock exists only inside the
+  running process; if the process dies, input returns immediately.
+  A first-run accessibility-permission flow (CGEventTap requires it) guides the user
+  to System Settings. An install script builds and installs the binary to ~/.local/bin.
+in_scope:
+  - e01: CLI laplap cat — consume all keyboard/mouse/trackpad input, screen visible, small status badge, CMDx6 unlock
+  - e02: CLI laplap clean — same input lock plus fullscreen black overlay with centered exit text on every display, cursor hidden
+  - e03: Accessibility permission flow — detect missing permission, print actionable message, offer to open System Settings; fail with clear error
+  - e04: install.sh — release build + install to ~/.local/bin, idempotent
+  - e05: Headless test suite — unlock-gesture counting, arg parsing, mode dispatch, event-consumption logic (no real HID or real permission needed)
+out_of_scope:
+  - File deletion or disk cleanup — clean mode is visual-only by design; not valuable for the cat problem (deferred)
+  - Customizable exit gesture or hotkey config — single fixed gesture reduces failure modes (deferred)
+  - Persistent daemon, login-item auto-start, or lock surviving process death — dangerous by design (excluded)
+  - Menu bar app, GUI preferences, notifications — CLI-only scope (excluded)
+  - Linux/Windows ports — macOS-specific APIs (excluded)
+  - Network access, telemetry, crash reporting — privacy (excluded)
+  - Input logging/recording or event passthrough — tool consumes and discards events only (excluded)
+  - Per-app input routing, remapping, or filtering (excluded)
+constraints:
+  - Swift 6, SwiftPM, target macOS 13+
+  - Zero external dependencies: Foundation, CoreGraphics, AppKit only
+  - Input blocking MUST use a single CGEventTap at kCGHIDEventTap consuming events
+  - Unlock gesture MUST be detectable inside the tap before events are consumed
+  - Process exit MUST restore all input with no cleanup requirement
+  - No persistence, no config files, no state across runs
+  - Lock must never require the user to kill -9 without an alternative: CMDx6 always works while process runs
+success_criteria:
+  - swift run laplap cat: typing, trackpad, and external mouse have zero effect; badge visible; CMDx6 exits with code 0
+  - swift run laplap clean: every display shows a black fullscreen overlay with centered "press CMD 6 times to exit" text; cursor hidden; CMDx6 exits and restores cursor
+  - First run without permission: clear message explaining the requirement, opens/points to System Settings, exits non-zero
+  - Killing the process from another terminal restores input immediately
+  - ./install.sh on a clean clone installs a working laplap binary to ~/.local/bin; re-run is a no-op update
+  - swift test passes; unlock logic verified headless (injected events, no accessibility grant required)
+  - --help lists both modes and the exit gesture
+references:
+  - CONVENTIONS.md (defensive categories, fail-safe rules)
+  - AGENTS.md (architecture, never-do list)
+  - specs/tech-architecture/tech-stack.md (updated during build)

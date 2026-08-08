@@ -1,0 +1,21 @@
+story_id: e01s02
+title: "Status badge window in cat mode"
+status: failing
+bcps: 3
+tasks:
+  - id: 1
+    description: "BadgeView: small semi-transparent NSWindow (pill label 'CAT MODE — CMD x6 to exit'), ignoresMouseEvents, floating window level, top-right of main screen"
+    verify: "swift build"
+    risk: P2
+    status: failing
+    allure:
+      severity: normal
+      categories: ["ui", "overlay"]
+  - id: 2
+    description: "Badge appears only in cat mode, disappears on unlock/exit; window released so process can exit"
+    verify: "swift build"
+    risk: P2
+    status: failing
+    allure:
+      severity: normal
+      categories: ["ui", "overlay"]

@@ -1,0 +1,14 @@
+id: e03
+slug: permission-flow
+title: "Accessibility permission flow"
+summary: >
+  CGEventTap requires the Accessibility permission. This epic makes first-run
+  painless: detect missing permission, prompt via AXIsProcessTrustedWithOptions,
+  open the System Settings pane, and exit with a documented error code when the
+  user declines. Never fail silently.
+status: planned
+stories:
+  - id: e03s01
+    title: "Prompt, System Settings handoff, documented error codes"
+    bcps: 3
+    status: planned

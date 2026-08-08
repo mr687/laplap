@@ -1,0 +1,13 @@
+id: e02
+slug: cleaning-mode
+title: "CLEANING MODE: black overlay lock"
+summary: >
+  laplap clean reuses the e01 input lock and adds a fullscreen black overlay on
+  every display with centered "press CMD 6 times to exit" text. Cursor is hidden
+  while armed and restored on exit. The overlay never accepts mouse events.
+status: planned
+stories:
+  - id: e02s01
+    title: "Fullscreen black overlay + hidden cursor + CMDx6 exit"
+    bcps: 5
+    status: planned

@@ -1,0 +1,17 @@
+id: e04
+slug: install-polish
+title: "install.sh + CLI polish"
+summary: >
+  Idempotent install script (release build -> ~/.local/bin) plus CLI polish:
+  --help with modes/gesture/permission notes, documented error codes, unknown
+  mode handling.
+status: planned
+stories:
+  - id: e04s01
+    title: "install.sh: idempotent release install"
+    bcps: 2
+    status: planned
+  - id: e04s02
+    title: "--help and error-code documentation"
+    bcps: 2
+    status: planned

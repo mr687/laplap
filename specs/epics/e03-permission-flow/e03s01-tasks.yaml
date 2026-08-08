@@ -1,0 +1,29 @@
+story_id: e03s01
+title: "Prompt, System Settings handoff, documented error codes"
+status: failing
+bcps: 3
+tasks:
+  - id: 1
+    description: "PermissionPrompter: when AXIsProcessTrusted() is false, call AXIsProcessTrustedWithOptions([.preflight] + [.setRights]) to raise the system prompt"
+    verify: "swift test && swift build"
+    risk: P0
+    status: failing
+    allure:
+      severity: critical
+      categories: ["permission"]
+  - id: 2
+    description: "Handoff: if user does not grant, offer to open System Settings privacy pane (open x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility) and wait up to 60s polling AXIsProcessTrusted"
+    verify: "swift test && swift build"
+    risk: P1
+    status: failing
+    allure:
+      severity: high
+      categories: ["permission"]
+  - id: 3
+    description: "Error contract: exit 3 with actionable message when permission missing; document codes 0/2/3 in --help and README section"
+    verify: "swift test"
+    risk: P1
+    status: failing
+    allure:
+      severity: high
+      categories: ["permission", "cli"]
