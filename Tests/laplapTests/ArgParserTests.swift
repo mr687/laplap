@@ -38,6 +38,21 @@ final class ArgParserTests: XCTestCase {
         XCTAssertTrue(ArgParser.usage.contains("Exit codes:"))
         XCTAssertTrue(ArgParser.usage.contains("3  Accessibility permission not granted"))
     }
+
+    func testUsageDocumentsCleanModeDescription() {
+        XCTAssertTrue(ArgParser.usage.contains("clean"))
+        XCTAssertFalse(ArgParser.usage.contains("not implemented"), "clean mode must have a real description")
+        XCTAssertTrue(ArgParser.usage.contains("overlays"))
+    }
+
+    func testUsageDocumentsUnlockGesture() {
+        XCTAssertTrue(ArgParser.usage.contains("CMD×6"))
+        XCTAssertTrue(ArgParser.usage.contains("6 times"))
+    }
+
+    func testUsageDocumentsPermissionRequirement() {
+        XCTAssertTrue(ArgParser.usage.contains("Requires Accessibility permission"))
+    }
 }
 
 /// Spawns the real built binary to verify exit codes and stderr routing.
