@@ -8,13 +8,13 @@ summary: >
   fade-out before close (0.15s) for the badge and every overlay window,
   and a refined overlay typography hierarchy (bold title, subtitle,
   progress line). Badge uses the ⌘ glyph in its baseline label.
-status: planned
+status: merged
 stories:
   - id: e06s01
     title: "Live unlock progress in badge and overlay"
     bcps: 5
-    status: planned
+    status: done
   - id: e06s02
     title: "Visual polish: fades and typography"
     bcps: 3
-    status: planned
+    status: done

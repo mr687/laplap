@@ -1,0 +1,25 @@
+release: 0.1.0
+status: delivered
+epics:
+  - id: e01
+    title: "CAT MODE: input lock core"
+    status: merged
+  - id: e02
+    title: "CLEANING MODE: black overlay lock"
+    status: merged
+  - id: e03
+    title: "Accessibility permission flow"
+    status: merged
+  - id: e04
+    title: "install.sh + CLI polish"
+    status: merged
+  - id: e05
+    title: "Settings command for permission grant"
+    status: merged
+  - id: e06
+    title: "UI/UX polish: unlock progress + visuals"
+    status: merged
+stories_total: 9
+stories_done: 9
+tests: 96
+user_uat: passed (cat + clean smoke, no bugs reported)

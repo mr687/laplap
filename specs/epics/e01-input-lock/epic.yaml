@@ -7,13 +7,13 @@ summary: >
   a rolling 10-second window) is detected inside the tap callback before events
   are consumed. A small corner badge shows the lock is armed. Process death
   restores input — no cleanup required.
-status: planned
+status: merged
 stories:
   - id: e01s01
     title: "Tracer bullet: laplap cat locks input, CMDx6 unlocks"
     bcps: 5
-    status: planned
+    status: done
   - id: e01s02
     title: "Status badge window in cat mode"
     bcps: 3
-    status: planned
+    status: done

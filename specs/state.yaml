@@ -1,4 +1,5 @@
+phase: delivered
 workflow_mode: team-pr
 handoff:
-  next_skill: plan-work
+  next_skill: release
 project: laplap
