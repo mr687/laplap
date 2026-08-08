@@ -2,8 +2,10 @@ import CoreGraphics
 import XCTest
 @testable import laplap
 
-/// CatMode wiring: permission gate -> tap install -> run loop -> unlock exits 0.
-/// All headless: injectable permission check, tap creator, and run-loop runner.
+/// CatMode wiring: permission gate -> tap install -> badge -> run loop ->
+/// unlock exits 0. All headless: injectable permission check, tap creator,
+/// badge factory, and run-loop runner.
+@MainActor
 final class CatModeTests: XCTestCase {
     private static func dummyTap() -> CFMachPort {
         var context = CFMachPortContext()
@@ -25,6 +27,78 @@ final class CatModeTests: XCTestCase {
             permissionCheck: { false }
         )
         XCTAssertEqual(mode.run(), PermissionGate.missingPermissionExitCode)
+    }
+
+    func testTapCreationFailureExitsThree() {
+        let mode = CatMode(
+            counter: UnlockCounter(),
+            tapCreator: { _ in nil },
+            runLoopRunner: { _ in XCTFail("run loop must not start when tap creation fails") },
+            permissionCheck: { true }
+        )
+        XCTAssertEqual(mode.run(), PermissionGate.missingPermissionExitCode)
+    }
+
+    func testBadgeCreatedOnlyWhenCatModeArms() {
+        var created: [BadgeView] = []
+        let mode = CatMode(
+            counter: UnlockCounter(),
+            tapCreator: { _ in CatModeTests.dummyTap() },
+            runLoopRunner: { _ in },
+            permissionCheck: { true },
+            badgeFactory: { let badge = BadgeView(); created.append(badge); return badge }
+        )
+        XCTAssertEqual(mode.run(), 0)
+        XCTAssertEqual(created.count, 1, "badge must be created exactly once, only when cat mode arms")
+        XCTAssertNil(mode.badge, "badge must be released before run() returns")
+    }
+
+    func testBadgeNotCreatedWithoutPermission() {
+        var created = 0
+        let mode = CatMode(
+            counter: UnlockCounter(),
+            tapCreator: { _ in CatModeTests.dummyTap() },
+            runLoopRunner: { _ in XCTFail("run loop must not start") },
+            permissionCheck: { false },
+            badgeFactory: { created += 1; return BadgeView() }
+        )
+        _ = mode.run()
+        XCTAssertEqual(created, 0, "no badge without permission")
+        XCTAssertNil(mode.badge)
+    }
+
+    func testBadgeNotCreatedWhenTapInstallFails() {
+        var created = 0
+        let mode = CatMode(
+            counter: UnlockCounter(),
+            tapCreator: { _ in nil },
+            runLoopRunner: { _ in XCTFail("run loop must not start") },
+            permissionCheck: { true },
+            badgeFactory: { created += 1; return BadgeView() }
+        )
+        _ = mode.run()
+        XCTAssertEqual(created, 0, "no badge when the tap cannot be installed")
+        XCTAssertNil(mode.badge)
+    }
+
+    func testBadgeTeardownOnUnlock() {
+        var mode: CatMode?
+        let runner: (CFRunLoop) -> Void = { _ in
+            guard let mode else { return }
+            let refcon = Unmanaged.passUnretained(mode.blocker.state).toOpaque()
+            let proxy = OpaquePointer(bitPattern: 1)!
+            for _ in 0..<6 {
+                _ = InputBlocker.callback(proxy, .flagsChanged, CatModeTests.commandKeyDown(54), refcon)
+            }
+        }
+        mode = CatMode(
+            counter: UnlockCounter(),
+            tapCreator: { _ in CatModeTests.dummyTap() },
+            runLoopRunner: runner,
+            permissionCheck: { true }
+        )
+        XCTAssertEqual(mode?.run(), 0, "unlock must stop the run loop and exit 0")
+        XCTAssertNil(mode?.badge, "badge must be closed and released on unlock")
     }
 
     func testUnlockStopsRunLoopWithExitZero() {
