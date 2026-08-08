@@ -16,6 +16,7 @@ final class CatMode {
 
     private let runLoopRunner: (CFRunLoop) -> Void
     private let permissionCheck: () -> Bool
+    private let promptFlow: () -> Bool
     private let badgeFactory: (@MainActor () -> BadgeView?)?
     private var signalSources: [DispatchSourceSignal] = []
 
@@ -24,6 +25,7 @@ final class CatMode {
         tapCreator: InputBlocker.TapCreator? = nil,
         runLoopRunner: @escaping (CFRunLoop) -> Void = { _ in CFRunLoopRun() },
         permissionCheck: @escaping () -> Bool = { PermissionGate.isTrusted() },
+        promptFlow: @escaping () -> Bool = { PermissionPrompter.promptAndWait() },
         badgeFactory: (@MainActor () -> BadgeView?)? = nil
     ) {
         self.blocker = InputBlocker(
@@ -33,6 +35,7 @@ final class CatMode {
         )
         self.runLoopRunner = runLoopRunner
         self.permissionCheck = permissionCheck
+        self.promptFlow = promptFlow
         self.badgeFactory = badgeFactory
         // Wire callbacks after all stored properties are initialized (the
         // closures capture self). Both run on the main run loop thread.
@@ -45,9 +48,14 @@ final class CatMode {
 
     @MainActor
     func run() -> Int32 {
-        guard permissionCheck() else {
-            FileHandle.standardError.write(Data((PermissionGate.guidanceMessage + "\n").utf8))
-            return PermissionGate.missingPermissionExitCode
+        if !permissionCheck() {
+            // First-run flow (epic e03): raise the system prompt, hand off to
+            // System Settings, poll up to 60s. Decline/expiry keeps the e01
+            // fail-fast contract: same message, same exit code.
+            guard promptFlow() else {
+                FileHandle.standardError.write(Data((PermissionGate.guidanceMessage + "\n").utf8))
+                return PermissionGate.missingPermissionExitCode
+            }
         }
         guard blocker.install() else {
             FileHandle.standardError.write(

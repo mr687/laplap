@@ -33,6 +33,11 @@ final class ArgParserTests: XCTestCase {
         XCTAssertTrue(ArgParser.usage.contains("cat"))
         XCTAssertTrue(ArgParser.usage.contains("clean"))
     }
+
+    func testUsageDocumentsExitCodes() {
+        XCTAssertTrue(ArgParser.usage.contains("Exit codes:"))
+        XCTAssertTrue(ArgParser.usage.contains("3  Accessibility permission not granted"))
+    }
 }
 
 /// Spawns the real built binary to verify exit codes and stderr routing.

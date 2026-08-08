@@ -23,6 +23,11 @@ enum ArgParser {
 
     Options:
       --help  Show this help
+
+    Exit codes:
+      0  Lock released (unlock gesture or signal) or help shown
+      2  Usage error (no mode, or unknown mode)
+      3  Accessibility permission not granted
     """
 
     /// Parses full argv (program name at index 0); only the first mode
