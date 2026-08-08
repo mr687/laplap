@@ -93,4 +93,35 @@ final class UnlockCounterTests: XCTestCase {
         }
         XCTAssertTrue(unlocked)
     }
+
+    // MARK: liveCount
+
+    func testLiveCountTracksPresses() {
+        for _ in 0..<3 {
+            XCTAssertFalse(press())
+        }
+        XCTAssertEqual(counter.liveCount, 3, "liveCount must reflect in-window presses")
+    }
+
+    func testLiveCountResetsToZeroAfterWindowExpiry() {
+        for _ in 0..<5 {
+            XCTAssertFalse(press())
+        }
+        now = 10.001
+        XCTAssertEqual(counter.liveCount, 0, "reading liveCount must expire stale presses")
+    }
+
+    func testLiveCountKeepsPressesAtExactlyWindowBoundary() {
+        for _ in 0..<5 {
+            XCTAssertFalse(press())
+        }
+        now = 10.0
+        XCTAssertEqual(counter.liveCount, 5, "press at exactly the window edge still counts")
+    }
+
+    func testLiveCountReadsArePure() {
+        XCTAssertFalse(press())
+        XCTAssertEqual(counter.liveCount, 1)
+        XCTAssertEqual(counter.liveCount, 1, "reads must not mutate the count")
+    }
 }

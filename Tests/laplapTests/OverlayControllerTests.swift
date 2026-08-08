@@ -12,7 +12,8 @@ private let overlaySecondFrame = NSRect(x: 1920, y: 0, width: 1440, height: 900)
 @MainActor
 final class OverlayControllerTests: XCTestCase {
     func testLabelText() {
-        XCTAssertEqual(OverlayController.OverlayConfig.standard.labelText, "CLEANING MODE — press CMD 6 times to exit")
+        XCTAssertEqual(OverlayController.OverlayConfig.standard.titleText, "CLEANING MODE")
+        XCTAssertEqual(OverlayController.OverlayConfig.standard.subtitleText, "Press ⌘ 6 times to exit")
     }
 
     func testWindowConfiguration() {
@@ -53,10 +54,52 @@ final class OverlayControllerTests: XCTestCase {
         controller.arm()
         defer { controller.disarm() }
         let window = controller.overlayWindows[0] as! OverlayWindow
-        XCTAssertEqual(window.label.stringValue, OverlayController.OverlayConfig.standard.labelText)
-        XCTAssertEqual(window.label.textColor, .white)
-        XCTAssertEqual(window.label.backgroundColor, .black)
+        XCTAssertEqual(window.titleLabel.stringValue, "CLEANING MODE")
+        XCTAssertEqual(window.titleLabel.font, NSFont.systemFont(ofSize: 34, weight: .bold), "title must be bold 34pt")
+        XCTAssertEqual(window.label.stringValue, "Press ⌘ 6 times to exit")
+        XCTAssertEqual(window.label.textColor, .white.withAlphaComponent(0.85), "subtitle at ~0.85 white alpha")
+        XCTAssertEqual(window.label.font, NSFont.systemFont(ofSize: 18, weight: .regular))
         XCTAssertEqual(window.label.alignment, .center, "instruction text must be centered")
+    }
+
+    func testProgressFieldHiddenInitially() {
+        let controller = OverlayController(
+            screenProvider: { [OverlayScreen(frame: overlayFrame, displayID: 1)] },
+            cursor: RecordingCursorController()
+        )
+        controller.arm()
+        defer { controller.disarm() }
+        let window = controller.overlayWindows[0] as! OverlayWindow
+        XCTAssertTrue(window.progressField.isHidden, "progress line hidden before any press")
+    }
+
+    func testSetProgressShowsAndHidesCount() {
+        let controller = OverlayController(
+            screenProvider: { [OverlayScreen(frame: overlayFrame, displayID: 1)] },
+            cursor: RecordingCursorController()
+        )
+        controller.arm()
+        defer { controller.disarm() }
+        let window = controller.overlayWindows[0] as! OverlayWindow
+        controller.setProgress(3, of: 6)
+        XCTAssertFalse(window.progressField.isHidden)
+        XCTAssertEqual(window.progressField.stringValue, "⌘ 3/6")
+        controller.setProgress(0, of: 6)
+        XCTAssertTrue(window.progressField.isHidden, "count 0 must hide the progress line")
+    }
+
+    func testFadeDurationConstant() {
+        XCTAssertEqual(OverlayWindow.fadeDuration, 0.15, accuracy: 0.001)
+    }
+
+    func testOverlayStartsTransparentOnArm() {
+        let controller = OverlayController(
+            screenProvider: { [OverlayScreen(frame: overlayFrame, displayID: 1)] },
+            cursor: RecordingCursorController()
+        )
+        controller.arm()
+        defer { controller.disarm() }
+        XCTAssertEqual(controller.overlayWindows[0].alphaValue, 0, "fade-in must start at alpha 0")
     }
 
     func testRebuildOnScreenChangeNotification() {

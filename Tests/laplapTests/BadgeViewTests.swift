@@ -7,7 +7,7 @@ import XCTest
 @MainActor
 final class BadgeViewTests: XCTestCase {
     func testLabelText() {
-        XCTAssertEqual(BadgeView.labelText, "CAT MODE — CMD x6 to exit")
+        XCTAssertEqual(BadgeView.labelText, "CAT MODE — ⌘ ×6 to exit")
     }
 
     func testWindowConfiguration() {
@@ -18,6 +18,33 @@ final class BadgeViewTests: XCTestCase {
         XCTAssertEqual(badge.styleMask, [.borderless])
         XCTAssertEqual(badge.label.text, BadgeView.labelText)
         XCTAssertNotNil(badge.backgroundColor)
+    }
+
+    func testSetProgressUpdatesLabelText() {
+        let badge = BadgeView()
+        badge.setProgress(3, of: 6)
+        XCTAssertEqual(badge.label.text, "CAT MODE — ⌘ 3/6")
+        badge.setProgress(6, of: 6)
+        XCTAssertEqual(badge.label.text, "CAT MODE — ⌘ 6/6")
+    }
+
+    func testSetProgressZeroRestoresBaseline() {
+        let badge = BadgeView()
+        badge.setProgress(0, of: 6)
+        XCTAssertEqual(badge.label.text, BadgeView.labelText, "count 0 must show the baseline label")
+        badge.setProgress(2, of: 6)
+        badge.setProgress(0, of: 6)
+        XCTAssertEqual(badge.label.text, BadgeView.labelText, "reset after progress must restore the baseline")
+    }
+
+    func testFadeDurationConstant() {
+        XCTAssertEqual(BadgeView.fadeDuration, 0.15, accuracy: 0.001)
+    }
+
+    func testFadeInStartsTransparent() {
+        let badge = BadgeView()
+        badge.fadeIn()
+        XCTAssertEqual(badge.alphaValue, 0, "fade-in must start at alpha 0 before animating")
     }
 
     func testAnchoredTopRightOfScreen() {

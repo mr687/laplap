@@ -1,16 +1,53 @@
 import AppKit
 
-/// Small semi-transparent borderless pill window: "CAT MODE — CMD x6 to exit",
+/// Small semi-transparent borderless pill window: "CAT MODE — ⌘ ×6 to exit",
 /// top-right of the main screen, floating above normal windows but
 /// mouse-transparent and non-activating. Purely informational.
 @MainActor
 final class BadgeView: NSWindow {
-    static let labelText = "CAT MODE — CMD x6 to exit"
+    static let labelText = "CAT MODE — ⌘ ×6 to exit"
+    /// Fade duration for arm/teardown (see FadeAnimation).
+    static let fadeDuration: TimeInterval = FadeAnimation.duration
 
     private static let margin: CGFloat = 12
 
     /// The pill's content view; exposed so tests can assert the label.
     var label: BadgeLabel { contentView as! BadgeLabel }
+
+    /// Live unlock progress: count > 0 shows "CAT MODE — ⌘ n/6", count == 0
+    /// restores the baseline label (window expired or not yet started).
+    func setProgress(_ count: Int, of required: Int) {
+        label.text = count > 0 ? "CAT MODE — ⌘ \(count)/\(required)" : Self.labelText
+    }
+
+    /// Fade-in from alpha 0 to 1. Call right after orderFrontRegardless.
+    func fadeIn() {
+        alphaValue = 0
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = Self.fadeDuration
+            animator().alphaValue = 1
+        }
+    }
+
+    /// Fade out to 0, then order out and close. The bounded main-run-loop
+    /// spin lets the fade render before the process exits; the input tap is
+    /// already stopped at this point, so only the fade itself (≤ 0.15s)
+    /// delays exit — never input.
+    func fadeOutAndClose() {
+        guard alphaValue > 0 else {
+            orderOut(nil)
+            close()
+            return
+        }
+        NSAnimationContext.runAnimationGroup({ context in
+            context.duration = Self.fadeDuration
+            animator().alphaValue = 0
+        }, completionHandler: { [weak self] in
+            self?.orderOut(nil)
+            self?.close()
+        })
+        RunLoop.main.run(until: Date().addingTimeInterval(Self.fadeDuration + 0.05))
+    }
 
     /// Places the pill at the top-right of `screenFrame`, clamped inside it.
     /// Pure so clamping is testable headless.
@@ -57,7 +94,9 @@ final class BadgeView: NSWindow {
 /// Pill-shaped label drawn by the badge.
 @MainActor
 final class BadgeLabel: NSView {
-    let text: String
+    var text: String {
+        didSet { needsDisplay = true }
+    }
 
     init(text: String) {
         self.text = text

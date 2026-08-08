@@ -19,21 +19,21 @@ automatically on window expiry. Consumption behavior, unlock semantics
 
 ## Requirements
 
-- [ ] (ADDED) REQ-1 — `UnlockCounter.liveCount`: a computed getter that runs
+- [x] (ADDED) REQ-1 — `UnlockCounter.liveCount`: a computed getter that runs
   window expiry with the injected clock and returns the current in-window press
   count; `register()` is unchanged and still returns the unlock Bool. — P1
-- [ ] (ADDED) REQ-2 — `InputBlocker.State.onProgress: (Int, Int) -> Void`
+- [x] (ADDED) REQ-2 — `InputBlocker.State.onProgress: (Int, Int) -> Void`
   (default no-op), fired after every event with `(liveCount, requiredPresses)`:
   after register/attempt for flagsChanged events and for all other event types,
   so any event refreshes the display and window expiry resets it. — P1
-- [ ] (ADDED) REQ-3 — Badge live label via `BadgeView.setProgress(_:of:)`:
+- [x] (ADDED) REQ-3 — Badge live label via `BadgeView.setProgress(_:of:)`:
   count > 0 → "CAT MODE — ⌘ n/6"; count == 0 → baseline "CAT MODE — ⌘ ×6 to
   exit"; BadgeLabel `text` becomes settable and redraws on set. — P1
-- [ ] (ADDED) REQ-4 — Clean overlay progress line via
+- [x] (ADDED) REQ-4 — Clean overlay progress line via
   `OverlayController.setProgress(_:of:)`: second NSTextField under the
   instruction label showing "⌘ n/6" while count > 0, hidden at 0; exposed via
   OverlayConfig for headless asserts. — P2
-- [ ] (ADDED) REQ-5 — Wiring: CatMode sets `blocker.state.onProgress` to update
+- [x] (ADDED) REQ-5 — Wiring: CatMode sets `blocker.state.onProgress` to update
   the badge label; CleanMode updates the overlay controller; both on the main
   queue. — P1
 
