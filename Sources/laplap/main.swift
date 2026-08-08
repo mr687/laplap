@@ -12,10 +12,12 @@ case .failure:
     FileHandle.standardError.write(Data((ArgParser.usage + "\n").utf8))
     exitCode = 2
 case .success(.clean):
-    // Parsed but no lock behavior in e01s01 (that is epic e02). Least-surprise
-    // stub: clear message, exit 0.
-    print("laplap clean: not implemented in this story (see epic e02)")
-    exitCode = 0
+    // e02s01: clean mode reuses the e01 input lock, adds fullscreen black
+    // overlays and a hidden cursor; CMDx6 unlock restores and exits 0.
+    // AppKit must be initialized before touching activation policy.
+    _ = NSApplication.shared
+    NSApp.setActivationPolicy(.accessory)
+    exitCode = CleanMode(counter: UnlockCounter()).run()
 case .success(.cat):
     // AppKit must be initialized before touching activation policy.
     _ = NSApplication.shared
