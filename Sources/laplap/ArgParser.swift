@@ -19,7 +19,10 @@ enum ArgParser {
 
     Modes:
       cat    Lock keyboard, trackpad, and mouse until Command is pressed 6 times within 10 seconds
-      clean  (not implemented in this story)
+      clean  Lock all input behind fullscreen black overlays; unlock with the same CMD×6 gesture
+
+    Unlock: press Command 6 times within 10 seconds (CMD×6).
+    Requires Accessibility permission to intercept input.
 
     Options:
       --help  Show this help

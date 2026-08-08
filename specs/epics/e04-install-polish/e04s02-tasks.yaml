@@ -1,13 +1,13 @@
 story_id: e04s02
 title: "--help and error-code documentation"
-status: failing
+status: passing
 bcps: 2
 tasks:
   - id: 1
     description: "--help prints both modes, the CMDx6 unlock gesture, permission requirement, exit codes (0 ok, 2 usage, 3 permission); exit 0"
     verify: "swift run laplap --help"
     risk: P2
-    status: failing
+    status: passing
     allure:
       severity: normal
       categories: ["cli", "docs"]
@@ -15,7 +15,7 @@ tasks:
     description: "Unknown mode prints usage to stderr and exits 2"
     verify: "swift run laplap bogus; test $? -eq 2"
     risk: P2
-    status: failing
+    status: passing
     allure:
       severity: normal
       categories: ["cli"]

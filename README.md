@@ -14,6 +14,9 @@ swift build -c release
 `laplap cat` blocks all input until Command is pressed 6 times within 10
 seconds (CMD×6), or until the process is killed.
 
+`laplap clean` locks the same way but behind fullscreen black overlays (and a
+hidden cursor) until CMD×6.
+
 ## Permissions
 
 laplap needs **Accessibility** permission to intercept input. On first run it
