@@ -6,6 +6,7 @@ enum ArgParser {
     enum Mode: Equatable, Sendable {
         case cat
         case clean
+        case settings
         case help
     }
 
@@ -20,6 +21,7 @@ enum ArgParser {
     Modes:
       cat    Lock keyboard, trackpad, and mouse until Command is pressed 6 times within 10 seconds
       clean  Lock all input behind fullscreen black overlays; unlock with the same CMD×6 gesture
+      settings  Open System Settings to grant Accessibility permission
 
     Unlock: press Command 6 times within 10 seconds (CMD×6).
     Requires Accessibility permission to intercept input.
@@ -29,6 +31,7 @@ enum ArgParser {
 
     Exit codes:
       0  Lock released (unlock gesture or signal) or help shown
+      1  Could not open System Settings
       2  Usage error (no mode, or unknown mode)
       3  Accessibility permission not granted
     """
@@ -44,6 +47,8 @@ enum ArgParser {
             return .success(.cat)
         case "clean":
             return .success(.clean)
+        case "settings":
+            return .success(.settings)
         case "--help":
             return .success(.help)
         default:
