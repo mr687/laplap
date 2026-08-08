@@ -24,9 +24,51 @@ final class CatModeTests: XCTestCase {
             counter: UnlockCounter(),
             tapCreator: { _ in CatModeTests.dummyTap() },
             runLoopRunner: { _ in XCTFail("run loop must not start without permission") },
-            permissionCheck: { false }
+            permissionCheck: { false },
+            // User declines the raised prompt / 60s handoff window — the
+            // e01 fail-fast contract (exit 3, no lock) must hold unchanged.
+            promptFlow: { false }
         )
         XCTAssertEqual(mode.run(), PermissionGate.missingPermissionExitCode)
+    }
+
+    func testDeclinedPermissionWritesExactGuidanceMessage() {
+        // Capture stderr (fd 2) so the exact e01 guidance message written on
+        // the decline path is asserted verbatim.
+        let savedFD = dup(STDERR_FILENO)
+        let pipe = Pipe()
+        dup2(pipe.fileHandleForWriting.fileDescriptor, STDERR_FILENO)
+        let mode = CatMode(
+            counter: UnlockCounter(),
+            tapCreator: { _ in CatModeTests.dummyTap() },
+            runLoopRunner: { _ in XCTFail("run loop must not start") },
+            permissionCheck: { false },
+            promptFlow: { false }
+        )
+        let code = mode.run()
+        pipe.fileHandleForWriting.closeFile()
+        dup2(savedFD, STDERR_FILENO)
+        close(savedFD)
+        let stderr = String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
+        XCTAssertEqual(code, PermissionGate.missingPermissionExitCode)
+        XCTAssertEqual(
+            stderr.trimmingCharacters(in: .whitespacesAndNewlines),
+            PermissionGate.guidanceMessage,
+            "decline path must print the exact e01 guidance message"
+        )
+    }
+
+    func testGrantDuringPermissionFlowProceedsWithLock() {
+        var started = false
+        let mode = CatMode(
+            counter: UnlockCounter(),
+            tapCreator: { _ in CatModeTests.dummyTap() },
+            runLoopRunner: { _ in started = true },
+            permissionCheck: { false },
+            promptFlow: { true }  // granted during the 60s poll window
+        )
+        XCTAssertEqual(mode.run(), 0)
+        XCTAssertTrue(started, "lock must proceed once permission is granted during the flow")
     }
 
     func testTapCreationFailureExitsThree() {
@@ -60,6 +102,7 @@ final class CatModeTests: XCTestCase {
             tapCreator: { _ in CatModeTests.dummyTap() },
             runLoopRunner: { _ in XCTFail("run loop must not start") },
             permissionCheck: { false },
+            promptFlow: { false },
             badgeFactory: { created += 1; return BadgeView() }
         )
         _ = mode.run()
