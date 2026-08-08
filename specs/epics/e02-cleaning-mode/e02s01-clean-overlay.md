@@ -1,4 +1,4 @@
-### Story [2.1]: Fullscreen black overlay + hidden cursor + CMDx6 exit — Implementation Steps
+### Story e02s01: Fullscreen black overlay + hidden cursor + CMDx6 exit — Implementation Steps
 
 **type:** feat
 **risk:** P0
