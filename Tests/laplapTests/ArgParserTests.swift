@@ -14,6 +14,10 @@ final class ArgParserTests: XCTestCase {
         XCTAssertEqual(try ArgParser.parse(["laplap", "--help"]).get(), .help)
     }
 
+    func testParseAcceptsSettings() throws {
+        XCTAssertEqual(try ArgParser.parse(["laplap", "settings"]).get(), .settings)
+    }
+
     func testParseUnknownModeFails() {
         let result = ArgParser.parse(["laplap", "bogus"])
         guard case .failure(let error) = result else {
@@ -52,6 +56,15 @@ final class ArgParserTests: XCTestCase {
 
     func testUsageDocumentsPermissionRequirement() {
         XCTAssertTrue(ArgParser.usage.contains("Requires Accessibility permission"))
+    }
+
+    func testUsageDocumentsSettingsMode() {
+        XCTAssertTrue(ArgParser.usage.contains("settings"))
+        XCTAssertTrue(ArgParser.usage.contains("Open System Settings to grant Accessibility permission"))
+    }
+
+    func testUsageDocumentsSettingsOpenFailedExitCode() {
+        XCTAssertTrue(ArgParser.usage.contains("1  Could not open System Settings"))
     }
 }
 

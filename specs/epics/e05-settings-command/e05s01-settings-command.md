@@ -7,9 +7,9 @@
 
 ## Requirements
 
-- [ ] (ADDED) `settings` mode accepted by the arg parser; usage lists it with a one-line description; the exit-code block gains `1  Could not open System Settings` — P2
-- [ ] (ADDED) SettingsCommand prints granted/not-granted status (AXIsProcessTrusted), opens the Accessibility pane via an injectable open-runner, prints step-by-step grant guidance, exits 0 on success, 1 when open fails — P1
-- [ ] (ADDED) Exit contract: 0 on success, 1 when the pane fails to open, unknown modes stay 2 (usage error) — P1
+- [x] (ADDED) `settings` mode accepted by the arg parser; usage lists it with a one-line description; the exit-code block gains `1  Could not open System Settings` — P2
+- [x] (ADDED) SettingsCommand prints granted/not-granted status (AXIsProcessTrusted), opens the Accessibility pane via an injectable open-runner, prints step-by-step grant guidance, exits 0 on success, 1 when open fails — P1
+- [x] (ADDED) Exit contract: 0 on success, 1 when the pane fails to open, unknown modes stay 2 (usage error) — P1
 
 ## Steps
 

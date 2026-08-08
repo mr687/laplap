@@ -18,6 +18,9 @@ case .success(.clean):
     _ = NSApplication.shared
     NSApp.setActivationPolicy(.accessory)
     exitCode = CleanMode(counter: UnlockCounter()).run()
+case .success(.settings):
+    // e05s01: no AppKit needed — pure CLI: status line, open pane, guidance.
+    exitCode = SettingsCommand().run()
 case .success(.cat):
     // AppKit must be initialized before touching activation policy.
     _ = NSApplication.shared
