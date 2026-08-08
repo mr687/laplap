@@ -1,13 +1,13 @@
 story_id: e02s01
 title: "Fullscreen black overlay + hidden cursor + CMDx6 exit"
-status: failing
+status: passing
 bcps: 5
 tasks:
   - id: 1
     description: "OverlayController: one black NSWindow per NSScreen, screenSaver window level, ignoresMouseEvents, created on screen change notifications"
     verify: "swift test && swift build"
     risk: P1
-    status: failing
+    status: passing
     allure:
       severity: high
       categories: ["overlay", "multi-display"]
@@ -15,7 +15,7 @@ tasks:
     description: "Centered instruction label ('CLEANING MODE — press CMD 6 times to exit') on each overlay; text styling plain white on black"
     verify: "swift test"
     risk: P2
-    status: failing
+    status: passing
     allure:
       severity: normal
       categories: ["overlay", "ui"]
@@ -23,7 +23,7 @@ tasks:
     description: "Cursor hide on arm (CGDisplayHideCursor), show on exit (CGDisplayShowCursor) — both in clean mode only"
     verify: "swift test"
     risk: P1
-    status: failing
+    status: passing
     allure:
       severity: high
       categories: ["overlay"]
@@ -31,7 +31,7 @@ tasks:
     description: "Wire clean mode end-to-end: input lock + overlay + cursor; CMDx6 unlock restores cursor, closes overlays, exits 0"
     verify: "swift test && swift build"
     risk: P0
-    status: failing
+    status: passing
     allure:
       severity: critical
       categories: ["integration"]
