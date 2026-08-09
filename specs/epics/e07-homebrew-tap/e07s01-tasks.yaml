@@ -1,0 +1,13 @@
+story_id: e07s01
+title: "v0.1.0 tag + GitHub release"
+status: failing
+bcps: 2
+tasks:
+  - id: 1
+    description: "Tag v0.1.0 on main, push to origin, create GitHub release with release notes; verify archive tarball is reachable"
+    verify: "git tag --list v0.1.0 && curl -fsI https://github.com/mr687/laplap/archive/refs/tags/v0.1.0.tar.gz"
+    risk: P2
+    status: failing
+    allure:
+      severity: normal
+      categories: ["release"]

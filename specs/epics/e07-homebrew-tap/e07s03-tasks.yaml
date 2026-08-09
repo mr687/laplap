@@ -1,0 +1,13 @@
+story_id: e07s03
+title: "README Homebrew install section"
+status: failing
+bcps: 1
+tasks:
+  - id: 1
+    description: "README Install section gains a Homebrew (tap) subsection with 'brew install mr687/tap/laplap' before the manual build block"
+    verify: "grep -n 'brew install' README.md"
+    risk: P2
+    status: failing
+    allure:
+      severity: normal
+      categories: ["docs"]

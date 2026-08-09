@@ -1,0 +1,13 @@
+story_id: e07s02
+title: "Homebrew tap formula laplap.rb"
+status: failing
+bcps: 2
+tasks:
+  - id: 1
+    description: "Create mr687/homebrew-tap tap, write Formula/laplap.rb (v0.1.0 tarball, sha256, swift build install), push to main; brew audit clean"
+    verify: "brew audit --strict mr687/tap/laplap"
+    risk: P2
+    status: failing
+    allure:
+      severity: normal
+      categories: ["homebrew"]
