@@ -18,6 +18,10 @@ final class ArgParserTests: XCTestCase {
         XCTAssertEqual(try ArgParser.parse(["laplap", "settings"]).get(), .settings)
     }
 
+    func testParseAcceptsVersion() throws {
+        XCTAssertEqual(try ArgParser.parse(["laplap", "version"]).get(), .version)
+    }
+
     func testParseUnknownModeFails() {
         let result = ArgParser.parse(["laplap", "bogus"])
         guard case .failure(let error) = result else {
@@ -61,6 +65,11 @@ final class ArgParserTests: XCTestCase {
     func testUsageDocumentsSettingsMode() {
         XCTAssertTrue(ArgParser.usage.contains("settings"))
         XCTAssertTrue(ArgParser.usage.contains("Open System Settings to grant Accessibility permission"))
+    }
+
+    func testUsageDocumentsVersionMode() {
+        XCTAssertTrue(ArgParser.usage.contains("version"))
+        XCTAssertTrue(ArgParser.usage.contains("Print version information"))
     }
 
     func testUsageDocumentsSettingsOpenFailedExitCode() {

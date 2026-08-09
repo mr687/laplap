@@ -21,6 +21,10 @@ case .success(.clean):
 case .success(.settings):
     // e05s01: no AppKit needed — pure CLI: status line, open pane, guidance.
     exitCode = SettingsCommand().run()
+case .success(.version):
+    // e08s01: print version information and exit 0.
+    print("laplap \(LaplapVersion.current)")
+    exitCode = 0
 case .success(.cat):
     // AppKit must be initialized before touching activation policy.
     _ = NSApplication.shared

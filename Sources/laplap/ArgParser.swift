@@ -7,6 +7,7 @@ enum ArgParser {
         case cat
         case clean
         case settings
+        case version
         case help
     }
 
@@ -22,6 +23,7 @@ enum ArgParser {
       cat    Lock keyboard, trackpad, and mouse until Command is pressed 6 times within 10 seconds
       clean  Lock all input behind fullscreen black overlays; unlock with the same CMD×6 gesture
       settings  Open System Settings to grant Accessibility permission
+      version  Print version information
 
     Unlock: press Command 6 times within 10 seconds (CMD×6).
     Requires Accessibility permission to intercept input.
@@ -49,6 +51,8 @@ enum ArgParser {
             return .success(.clean)
         case "settings":
             return .success(.settings)
+        case "version":
+            return .success(.version)
         case "--help":
             return .success(.help)
         default:

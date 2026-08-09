@@ -39,6 +39,7 @@ cp .build/arm64-apple-macosx/release/laplap ~/.local/bin/   # path may be .build
 laplap cat      # lock all input, screen visible
 laplap clean    # lock all input, black overlay on every display
 laplap settings # open System Settings to grant Accessibility permission
+laplap version # print version information
 laplap --help   # usage, exit codes
 ```
 
