@@ -8,4 +8,4 @@ stories:
   - id: e08s01
     title: "laplap version prints version info"
     bcps: 2
-    status: planned
+    status: done
