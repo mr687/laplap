@@ -42,6 +42,13 @@ epics:
     bcps: 8
     status: planned
     wsjf_order: 6
+  - id: e08
+    slug: version-command
+    title: "Version command"
+    summary: "laplap version prints laplap 0.1.0"
+    bcps: 2
+    status: planned
+    wsjf_order: 8
   - id: e07
     slug: homebrew-tap
     title: "Homebrew tap release"

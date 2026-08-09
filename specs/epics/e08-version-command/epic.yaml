@@ -1,0 +1,11 @@
+id: e08
+slug: version-command
+title: "Version command"
+summary: >
+  laplap version — print version information (laplap 0.1.0) and exit 0.
+status: planned
+stories:
+  - id: e08s01
+    title: "laplap version prints version info"
+    bcps: 2
+    status: planned
