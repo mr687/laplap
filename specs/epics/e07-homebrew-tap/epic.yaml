@@ -1,0 +1,21 @@
+id: e07
+slug: homebrew-tap
+title: "Homebrew tap release"
+summary: >
+  v0.1.0 tag + GitHub release of laplap, formula in the mr687/homebrew-tap
+  tap, and a README Homebrew install section. Users install via
+  `brew install mr687/tap/laplap` instead of the manual build.
+status: planned
+stories:
+  - id: e07s01
+    title: "v0.1.0 tag + GitHub release"
+    bcps: 2
+    status: planned
+  - id: e07s02
+    title: "Homebrew tap formula laplap.rb"
+    bcps: 2
+    status: planned
+  - id: e07s03
+    title: "README Homebrew install section"
+    bcps: 1
+    status: planned

@@ -42,3 +42,10 @@ epics:
     bcps: 8
     status: planned
     wsjf_order: 6
+  - id: e07
+    slug: homebrew-tap
+    title: "Homebrew tap release"
+    summary: "v0.1.0 release + tap formula + README install docs"
+    bcps: 5
+    status: planned
+    wsjf_order: 7

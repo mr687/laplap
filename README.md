@@ -20,7 +20,12 @@ mouse ignore all input — so a cat walking on the desk cannot type or click.
 ```
 
 Re-running the installer simply overwrites the previous install (idempotent).
-No Homebrew, no code signing, no daemon.
+No code signing, no daemon.
+
+### Homebrew (tap)
+```sh
+brew install mr687/tap/laplap
+```
 
 Or build manually:
 
